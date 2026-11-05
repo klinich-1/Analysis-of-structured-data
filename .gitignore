@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Распакованный пакет и результаты локальных запусков
+parking_team_package/
+reproduced/
+
+# Ключи и локальные настройки
+.env
+
+# Система
+.DS_Store
+Thumbs.db
