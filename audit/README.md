@@ -4,7 +4,7 @@
 
 ## Запуск
 
-Нужен Python 3.10+, дополнительные библиотеки не требуются. Распакуйте `parking_team_package_no_pdf.zip` в корень репозитория и выполните из корня:
+Нужен Python 3.10+, дополнительные библиотеки не требуются. Распакуйте `data/parking_team_package_no_pdf.zip` в корень репозитория и выполните из корня:
 
 ```sh
 python audit/audit_repro.py --data parking_team_package/data --refs parking_team_package/tables/reference_answers.csv --out audit/audit_results.json
