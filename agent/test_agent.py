@@ -166,6 +166,10 @@ class Harness(unittest.TestCase):
             row = evaluate.summarize(args.out)[0]
             self.assertEqual((row['runs'], row['strict'], row['protocol']), (2, 0.5, 0.5))
 
+    def test_package_prompt_includes_rule(self):
+        reference = dict(question_ru='Сколько?', processing_rule='P1: rule')
+        self.assertIn('P1: rule', evaluate.build_prompt(reference, 'package'))
+
     def test_failed_run_is_repeated(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / 'runs.jsonl'

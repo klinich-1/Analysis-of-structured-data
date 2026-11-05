@@ -68,7 +68,8 @@ def load_alternatives(path: Path = Path('audit/audit_results.json')) -> dict:
 
 def build_prompt(reference: dict, condition: str) -> str:
     if condition == 'package':
-        return reference['question_ru']
+        rule = reference.get('processing_rule')
+        return f"Правило обработки: {rule}\n\n{reference['question_ru']}" if rule else reference['question_ru']
     if condition == 'protocol':
         return f"{PROTOCOL}\n\nВопрос: {reference['question_ru']}"
     raise ValueError(condition)
