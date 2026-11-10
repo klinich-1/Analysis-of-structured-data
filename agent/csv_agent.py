@@ -80,12 +80,13 @@ class AgentResult:
     messages: list = field(default_factory=list)
 
 
-def make_client(api_key: str | None = None):
+def make_client(api_key: str | None = None, base_url: str | None = None):
+    """Client for any OpenAI-compatible API: LLM_BASE_URL and LLM_API_KEY, or OpenRouter by default."""
     from openai import OpenAI
-    key = api_key or os.environ.get('OPENROUTER_API_KEY')
+    key = api_key or os.environ.get('LLM_API_KEY') or os.environ.get('OPENROUTER_API_KEY')
     if not key:
-        raise SystemExit('Нет ключа: задайте переменную окружения OPENROUTER_API_KEY.')
-    return OpenAI(api_key=key, base_url=BASE_URL)
+        raise SystemExit('Нет ключа: задайте переменную окружения LLM_API_KEY или OPENROUTER_API_KEY.')
+    return OpenAI(api_key=key, base_url=base_url or os.environ.get('LLM_BASE_URL') or BASE_URL)
 
 
 def _create(client, retries: int, **kwargs):

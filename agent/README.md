@@ -16,7 +16,10 @@ pip install -r agent/requirements.txt
 python -c "import zipfile; zipfile.ZipFile('data/parking_team_package_no_pdf.zip').extractall()"
 ```
 
-Ключ OpenRouter задайте в переменной окружения `OPENROUTER_API_KEY` и не сохраняйте его в файлах. В Colab используйте Secrets.
+Ключ задайте в переменной окружения и не сохраняйте его в файлах. В Colab используйте Secrets.
+
+- OpenRouter: `OPENROUTER_API_KEY`.
+- Любой другой сервис, совместимый с OpenAI: `LLM_BASE_URL` (адрес вида `https://.../v1`) и `LLM_API_KEY`.
 
 ## Запуск
 
