@@ -28,6 +28,8 @@ SYSTEM_PROMPT = """Ты анализируешь один CSV-файл с пом
 Переменная df в run_python уже содержит таблицу. Каждый вызов выполняется заново, поэтому результат нужно печатать через print.
 Последняя строка ответа должна иметь вид: ANSWER: <значение>. Несколько значений разделяй точкой с запятой."""
 
+ANSWER_REMINDER = 'Дай итоговый ответ. Последняя строка должна иметь вид: ANSWER: <значение>.'
+
 TOOLS = [
     {'type': 'function', 'function': {
         'name': 'describe_csv',
@@ -139,6 +141,8 @@ def run_agent(client, question: str, csv_path: str | Path, model: str = DEFAULT_
     messages = [{'role': 'system', 'content': system},
                 {'role': 'user', 'content': f'Файл: {Path(csv_path).name}\n\nВопрос: {question}'}]
     result = AgentResult(answer=None, stop_reason='max_iterations', messages=messages)
+    needs_answer_line = 'ANSWER:' in system
+    reminded = False
     for _ in range(max_iterations):
         result.iterations += 1
         response = _create(client, retries, model=model, messages=messages, tools=TOOLS,
@@ -148,9 +152,15 @@ def run_agent(client, question: str, csv_path: str | Path, model: str = DEFAULT_
         message = choice.message
         calls = message.tool_calls or []
         if not calls:
+            messages.append({'role': 'assistant', 'content': message.content or ''})
+            if (needs_answer_line and not reminded and choice.finish_reason != 'length'
+                    and 'ANSWER:' not in (message.content or '')):
+                # One reminder when the model stops without the required final line, e.g. with an empty message.
+                reminded = True
+                messages.append({'role': 'user', 'content': ANSWER_REMINDER})
+                continue
             result.answer = message.content
             result.stop_reason = choice.finish_reason
-            messages.append({'role': 'assistant', 'content': message.content})
             break
         messages.append({'role': 'assistant', 'content': message.content, 'tool_calls': [
             {'id': c.id, 'type': 'function', 'function': {'name': c.function.name, 'arguments': c.function.arguments}}
