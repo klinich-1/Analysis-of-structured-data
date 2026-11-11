@@ -29,6 +29,7 @@ SYSTEM_PROMPT = """Ты анализируешь один CSV-файл с пом
 Последняя строка ответа должна иметь вид: ANSWER: <значение>. Несколько значений разделяй точкой с запятой."""
 
 ANSWER_REMINDER = 'Дай итоговый ответ. Последняя строка должна иметь вид: ANSWER: <значение>.'
+REPORT_REMINDER = 'Напиши итоговый ответ по уже полученным результатам, без новых вызовов инструментов.'
 
 TOOLS = [
     {'type': 'function', 'function': {
@@ -135,13 +136,19 @@ def ask_model(client, question: str, model: str = DEFAULT_MODEL, max_tokens: int
 
 
 def run_agent(client, question: str, csv_path: str | Path, model: str = DEFAULT_MODEL, max_iterations: int = 12,
-              max_tokens: int = 4096, retries: int = 4, system: str = SYSTEM_PROMPT) -> AgentResult:
-    """Run the tool loop until the model answers or a limit is reached."""
+              max_tokens: int = 4096, retries: int = 4, system: str = SYSTEM_PROMPT,
+              final_answer: bool = False) -> AgentResult:
+    """Run the tool loop until the model answers or a limit is reached.
+
+    With final_answer=True a model that used up its iterations gets one more request without tools,
+    so a long open task still ends with a written answer.
+    """
     started = time.monotonic()
     messages = [{'role': 'system', 'content': system},
                 {'role': 'user', 'content': f'Файл: {Path(csv_path).name}\n\nВопрос: {question}'}]
     result = AgentResult(answer=None, stop_reason='max_iterations', messages=messages)
     needs_answer_line = 'ANSWER:' in system
+    reminder = ANSWER_REMINDER if needs_answer_line else REPORT_REMINDER
     reminded = False
     for _ in range(max_iterations):
         result.iterations += 1
@@ -152,12 +159,13 @@ def run_agent(client, question: str, csv_path: str | Path, model: str = DEFAULT_
         message = choice.message
         calls = message.tool_calls or []
         if not calls:
-            messages.append({'role': 'assistant', 'content': message.content or ''})
-            if (needs_answer_line and not reminded and choice.finish_reason != 'length'
-                    and 'ANSWER:' not in (message.content or '')):
-                # One reminder when the model stops without the required final line, e.g. with an empty message.
+            content = message.content or ''
+            messages.append({'role': 'assistant', 'content': content})
+            missing = not content.strip() or (needs_answer_line and 'ANSWER:' not in content)
+            if missing and not reminded and choice.finish_reason != 'length':
+                # One reminder when the model stops with an empty message or without the required final line.
                 reminded = True
-                messages.append({'role': 'user', 'content': ANSWER_REMINDER})
+                messages.append({'role': 'user', 'content': reminder})
                 continue
             result.answer = message.content
             result.stop_reason = choice.finish_reason
@@ -169,6 +177,15 @@ def run_agent(client, question: str, csv_path: str | Path, model: str = DEFAULT_
             result.tool_calls += 1
             output = _call_tool(call.function.name, call.function.arguments, csv_path)
             messages.append({'role': 'tool', 'tool_call_id': call.id, 'content': output})
+    if final_answer and not result.answer:
+        messages.append({'role': 'user', 'content': reminder})
+        response = _create(client, retries, model=model, messages=messages, tools=TOOLS, tool_choice='none',
+                           max_tokens=max_tokens, temperature=0)
+        _usage(result, response)
+        result.iterations += 1
+        result.answer = response.choices[0].message.content
+        messages.append({'role': 'assistant', 'content': result.answer or ''})
+        result.stop_reason = 'final_answer'
     result.seconds = time.monotonic() - started
     return result
 

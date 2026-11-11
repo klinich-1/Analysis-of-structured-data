@@ -93,6 +93,17 @@ class Sandbox(unittest.TestCase):
         client = FakeClient([reply(content=''), reply(content='')])
         self.assertEqual(csv_agent.run_agent(client, 'q', self.csv, model='m').iterations, 2)
 
+    def test_final_answer_after_iteration_limit(self):
+        client = FakeClient([reply(calls=[call('describe_csv', '{}')], finish='tool_calls')] * 2 + [reply(content='Отчет')])
+        result = csv_agent.run_agent(client, 'q', self.csv, model='m', max_iterations=2, system='s', final_answer=True)
+        self.assertEqual((result.stop_reason, result.answer, result.iterations), ('final_answer', 'Отчет', 3))
+        self.assertEqual(client.requests[-1]['tool_choice'], 'none')
+        self.assertEqual(result.messages[-2]['content'], csv_agent.REPORT_REMINDER)
+
+    def test_empty_report_gets_reminder(self):
+        client = FakeClient([reply(content=''), reply(content='Отчет')])
+        self.assertEqual(csv_agent.run_agent(client, 'q', self.csv, model='m', system='s').answer, 'Отчет')
+
     def test_length_stop_is_reported(self):
         result = csv_agent.run_agent(FakeClient([reply(content='обрезано', finish='length')]), 'q', self.csv, model='m')
         self.assertEqual(result.stop_reason, 'length')

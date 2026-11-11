@@ -9,7 +9,7 @@ __pycache__/
 # Распакованный пакет и результаты локальных запусков
 parking_team_package/
 reproduced/
-results/
+/results/
 
 # Ключи и локальные настройки
 .env

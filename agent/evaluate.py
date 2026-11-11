@@ -41,6 +41,7 @@ CHECKLIST = ['Служебное значение -1 в freeParking', 'Парк�
              'Застывшие отрезки у ID 76', 'Застывший отрезок у ID 79', 'Застывший отрезок у ID 9',
              'Общесистемные сбои (-1 одновременно у многих парковок)']
 FRACTION_TOLERANCE = 2e-4
+DEFECT_ITERATIONS = 20  # an open review needs more steps than one question
 
 
 def csv_for_month(month: str, package: Path = PACKAGE) -> Path:
@@ -228,7 +229,8 @@ def run_defects(args, client=None) -> int:
         key = dict(task='defects', mode='agent', model=args.model, condition='open', month=month, metric='defects')
         try:
             system = SYSTEM_PROMPT.split('Последняя строка')[0].strip()
-            record = _record(run_agent(client, DEFECT_PROMPT, csv_for_month(month, args.package), model=args.model, system=system), **key)
+            record = _record(run_agent(client, DEFECT_PROMPT, csv_for_month(month, args.package), model=args.model, system=system,
+                                       max_iterations=DEFECT_ITERATIONS, final_answer=True), **key)
         except Exception as error:
             record = {**key, 'error': f'{type(error).__name__}: {error}'}
         with open(args.out, 'a', encoding='utf-8') as fh:
