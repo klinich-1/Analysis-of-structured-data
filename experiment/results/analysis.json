@@ -1,0 +1,242 @@
+{
+ "iqr_variants": {
+  "2026-05": {
+   "one_minus": 199,
+   "c_minus_f": 200,
+   "exact": 199
+  },
+  "2026-06": {
+   "one_minus": 303,
+   "c_minus_f": 305,
+   "exact": 303
+  },
+  "2026-07": {
+   "one_minus": 344,
+   "c_minus_f": 365,
+   "exact": 342
+  },
+  "2026-08": {
+   "one_minus": 472,
+   "c_minus_f": 468,
+   "exact": 465
+  },
+  "2026-09": {
+   "one_minus": 220,
+   "c_minus_f": 220,
+   "exact": 220
+  }
+ },
+ "iqr_reference": {
+  "2026-05": "199",
+  "2026-06": "303",
+  "2026-07": "344",
+  "2026-08": "472",
+  "2026-09": "220"
+ },
+ "accuracy": {
+  "claude-sonnet-5-5|agent|protocol": {
+   "strict": 54,
+   "protocol": 79,
+   "with_p1s": 79,
+   "n": 85,
+   "without_iqr": 79
+  },
+  "claude-sonnet-5-5|agent|package": {
+   "strict": 70,
+   "protocol": 77,
+   "with_p1s": 77,
+   "n": 85,
+   "without_iqr": 77
+  },
+  "claude-sonnet-5-5|llm|protocol": {
+   "strict": 9,
+   "protocol": 9,
+   "with_p1s": 9,
+   "n": 85,
+   "without_iqr": 9
+  },
+  "claude-sonnet-5-5|llm|package": {
+   "strict": 10,
+   "protocol": 10,
+   "with_p1s": 10,
+   "n": 85,
+   "without_iqr": 10
+  },
+  "deepseek-v4-pro-0813|agent|protocol": {
+   "strict": 55,
+   "protocol": 80,
+   "with_p1s": 80,
+   "n": 85,
+   "without_iqr": 80
+  },
+  "deepseek-v4-pro-0813|agent|package": {
+   "strict": 71,
+   "protocol": 71,
+   "with_p1s": 71,
+   "n": 85,
+   "without_iqr": 71
+  },
+  "deepseek-v4-pro-0813|llm|protocol": {
+   "strict": 9,
+   "protocol": 9,
+   "with_p1s": 9,
+   "n": 85,
+   "without_iqr": 9
+  },
+  "deepseek-v4-pro-0813|llm|package": {
+   "strict": 10,
+   "protocol": 10,
+   "with_p1s": 10,
+   "n": 85,
+   "without_iqr": 10
+  },
+  "gpt-6.1-sol|agent|protocol": {
+   "strict": 59,
+   "protocol": 84,
+   "with_p1s": 84,
+   "n": 85,
+   "without_iqr": 80
+  },
+  "gpt-6.1-sol|agent|package": {
+   "strict": 85,
+   "protocol": 85,
+   "with_p1s": 85,
+   "n": 85,
+   "without_iqr": 80
+  },
+  "gpt-6.1-sol|llm|protocol": {
+   "strict": 5,
+   "protocol": 5,
+   "with_p1s": 5,
+   "n": 85,
+   "without_iqr": 5
+  },
+  "gpt-6.1-sol|llm|package": {
+   "strict": 5,
+   "protocol": 5,
+   "with_p1s": 5,
+   "n": 85,
+   "without_iqr": 5
+  }
+ },
+ "causes": {
+  "claude-sonnet-5-5|agent|protocol": {
+   "iqr_rounding": 4,
+   "no_answer": 2
+  },
+  "claude-sonnet-5-5|agent|package": {
+   "iqr_rounding": 3,
+   "iqr_as_filter": 1,
+   "iqr_retained": 2,
+   "no_answer": 2
+  },
+  "deepseek-v4-pro-0813|agent|protocol": {
+   "iqr_retained": 5
+  },
+  "deepseek-v4-pro-0813|agent|package": {
+   "iqr_as_filter": 6,
+   "no_answer": 4,
+   "iqr_retained": 4
+  },
+  "gpt-6.1-sol|agent|protocol": {
+   "iqr_rounding": 1
+  }
+ },
+ "usage": {
+  "claude-sonnet-5-5|agent|protocol": {
+   "tokens": 18424,
+   "seconds": 49.8,
+   "tool_calls": 3.9,
+   "no_answer": 2
+  },
+  "claude-sonnet-5-5|agent|package": {
+   "tokens": 22054,
+   "seconds": 55.5,
+   "tool_calls": 3.7,
+   "no_answer": 2
+  },
+  "claude-sonnet-5-5|llm|protocol": {
+   "tokens": 4610,
+   "seconds": 12.1,
+   "tool_calls": 0.0,
+   "no_answer": 2
+  },
+  "claude-sonnet-5-5|llm|package": {
+   "tokens": 4798,
+   "seconds": 16.2,
+   "tool_calls": 0.0,
+   "no_answer": 0
+  },
+  "deepseek-v4-pro-0813|agent|protocol": {
+   "tokens": 3412,
+   "seconds": 95.3,
+   "tool_calls": 2.0,
+   "no_answer": 0
+  },
+  "deepseek-v4-pro-0813|agent|package": {
+   "tokens": 12681,
+   "seconds": 131.0,
+   "tool_calls": 4.7,
+   "no_answer": 4
+  },
+  "deepseek-v4-pro-0813|llm|protocol": {
+   "tokens": 4046,
+   "seconds": 20.0,
+   "tool_calls": 0.0,
+   "no_answer": 1
+  },
+  "deepseek-v4-pro-0813|llm|package": {
+   "tokens": 4049,
+   "seconds": 26.9,
+   "tool_calls": 0.0,
+   "no_answer": 2
+  },
+  "gpt-6.1-sol|agent|protocol": {
+   "tokens": 2694,
+   "seconds": 24.3,
+   "tool_calls": 2.0,
+   "no_answer": 0
+  },
+  "gpt-6.1-sol|agent|package": {
+   "tokens": 2611,
+   "seconds": 29.9,
+   "tool_calls": 2.0,
+   "no_answer": 0
+  },
+  "gpt-6.1-sol|llm|protocol": {
+   "tokens": 3797,
+   "seconds": 8.7,
+   "tool_calls": 0.0,
+   "no_answer": 0
+  },
+  "gpt-6.1-sol|llm|package": {
+   "tokens": 3643,
+   "seconds": 9.1,
+   "tool_calls": 0.0,
+   "no_answer": 0
+  },
+  "claude-sonnet-5-5|defects": {
+   "tokens": 449530,
+   "seconds": 217.1,
+   "tool_calls": 14.6,
+   "reports": 5
+  },
+  "deepseek-v4-pro-0813|defects": {
+   "tokens": 127101,
+   "seconds": 329.4,
+   "tool_calls": 15.0,
+   "reports": 5
+  },
+  "gpt-6.1-sol|defects": {
+   "tokens": 57509,
+   "seconds": 155.6,
+   "tool_calls": 6.8,
+   "reports": 5
+  }
+ },
+ "llm_correct_metrics": {
+  "top_parking_all_ties": 11,
+  "data_rows": 29,
+  "other_negative_n": 8
+ }
+}

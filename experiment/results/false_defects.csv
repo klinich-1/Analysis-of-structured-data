@@ -1,0 +1,16 @@
+﻿report,model,month,annotator_1,annotator_2
+R01,gpt-6.1-sol,2026-08,0,0
+R02,gpt-6.1-sol,2026-05,0,0
+R03,deepseek-v4-pro-0813,2026-07,1,1
+R04,claude-sonnet-5-5,2026-07,1,1
+R05,deepseek-v4-pro-0813,2026-08,1,1
+R06,claude-sonnet-5-5,2026-05,1,1
+R07,deepseek-v4-pro-0813,2026-05,1,1
+R08,gpt-6.1-sol,2026-06,0,0
+R09,claude-sonnet-5-5,2026-09,1,1
+R10,gpt-6.1-sol,2026-07,0,0
+R11,gpt-6.1-sol,2026-09,0,0
+R12,claude-sonnet-5-5,2026-06,1,1
+R13,deepseek-v4-pro-0813,2026-09,1,1
+R14,claude-sonnet-5-5,2026-08,1,1
+R15,deepseek-v4-pro-0813,2026-06,1,1
