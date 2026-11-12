@@ -1,0 +1,44 @@
+% \AtBeginDocument{%
+%   \ExecuteBibliographyOptions{%
+%     refsection=title,%
+%   }
+% }
+
+\DeclareRobustCommand{\putbib}[1][]{%
+  %% Записываем в aux-file название bib-файла, с которым работаем
+  \write\PFU@aux{\string\def\string\pfuBiblatexResource{#1.bib}}
+  \begingroup
+  % \iflanguage{\@defaultlanguage}{%
+  % \curbibstyle{\PFUaltbibstyle}
+  % \def\refname{References}
+  % \curaltlanguage{\@defaultaltlanguage}
+  % }{%
+  %   \curbibstyle{\PFUmainbibstyle}
+  %   \def\refname{{\cyr\CYRL\cyri\cyrt\cyre\cyrr\cyra\cyrt\cyru\cyrr\cyra}}%
+  %   \curaltlanguage{\@defaultlanguage}
+  % }
+  %   \addbibresource{#1.bib}
+  %   \printbibliography[heading=subbibliography,resetnumbers=true]
+  \printbibliography[heading=subbibliography]
+  \endgroup
+  \@putbib@hook@post
+  \label{endtitle}
+  \end{refsection}
+  \clearpage
+}
+
+\def\@putbib@hook@post{\global\let\@putaltbib@hook@post\@empty}
+
+\g@addto@macro\@title@hook{%
+  \begin{refsection}[\pfuBiblatexResource]
+}
+  
+% \def\@putbib@hook@post{%
+%   % \endrefsection
+%   \end{refsection}
+% }
+
+%%% Local Variables:
+%%% mode: latex
+%%% coding: utf-8-unix
+%%% End:

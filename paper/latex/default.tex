@@ -1,0 +1,24 @@
+% Temporary hack for LaTeX2e <2019-10-01>
+\PassOptionsToPackage{force}{filehook}
+
+\documentclass[%
+psamsfonts,
+intlimits,
+series=pfu-dcm,%
+10pt,
+]{pfuproc}
+
+% Don't remove definition.tex
+\input{definition}
+
+\journalvolume{230}%
+\journalnumber{1}%
+\journalyear{2222}%
+\journalfirstpage{1}
+
+\begin{document}
+
+\subfile{article}
+
+\end{document}
+
